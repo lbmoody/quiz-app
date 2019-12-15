@@ -1,4 +1,5 @@
-export var jQuiz = [
+export var javascriptQuizTitle = "Javascript";
+export var javascriptQuiz = [
     {
         question: "Commonly used data types DO NOT include:",
         options: ["strings", "booleans", "alerts", "numbers"],
