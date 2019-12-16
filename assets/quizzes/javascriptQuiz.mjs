@@ -13,21 +13,33 @@ export var javascriptQuiz = [
         asked: false
     }, 
     {
-        question: "What color is at the top of a rainbow?",
-        options: ["red", "orange", "yellow", "green"], 
-        answer: "red",
+        question: "The DOM tree is a model of a webpage",
+        options: ["true", "false"],
+        answer: "true",
         asked: false
     }, 
     {
-        question: "What color is at the top of a rainbow?",
-        options: ["red", "orange", "yellow", "green"], 
-        answer: "red",
+        question: "Boolean datatypes can also be represented as a number?",
+        options: ["true", "false"],
+        answer: "true",
         asked: false
     }, 
     {
-        question: "What color is at the top of a rainbow?",
-        options: ["red", "orange", "yellow", "green"], 
-        answer: "red",
+        question: "Which of these is NOT a logical operator",
+        options: ["//", "||", "&&", "!"], 
+        answer: "//",
+        asked: false
+    }, 
+    {
+        question: "You can access the properties or methods of an object using",
+        options: ["logical operators", "dot notation", "parentheses", "tags"], 
+        answer: "dot notation",
+        asked: false
+    }, 
+    {
+        question: "The conditional (ternary) operator is the only JavaScript operator that takes three conditions",
+        options: ["true", "false"],
+        answer: "true",
         asked: false
     }, 
 

@@ -31,9 +31,15 @@ export var htmlQuiz = [
         asked: false
     }, 
     {
-        question: "HTML is not capable of submitting its own forms.",
+        question: "HTML is NOT capable of submitting its own forms.",
         options: ["true", "false"],
         answer: "false", 
+        asked: false
+    }, 
+    {
+        question: "How many levels of heading tags are native to HTML?",
+        options: ["4", "5", "6", "7"],
+        answer: "6", 
         asked: false
     }, 
 
