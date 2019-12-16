@@ -5,9 +5,19 @@ import { cssQuiz }        from "./quizzes/cssQuiz.mjs";
 import { javascriptQuizTitle } from "./quizzes/javascriptQuiz.mjs";
 import { javascriptQuiz } from "./quizzes/javascriptQuiz.mjs";
 
-// serve quiz questions to the user in a random order
 
 // order quiz answers for each question in a random order
+
+// create function to reset the quizzes
+    // reset quiz.asked === false;
+
+// create function to check users option against correct answer
+    // if correct turn button green
+    // if incorrect turn button red and turn correct answer green
+
+// create function to ask the user another question
+
+// create highscore functionality
 
 // add countdown timer for the entire quiz
     // end score is the amount of time left when quiz is finished
@@ -17,17 +27,20 @@ import { javascriptQuiz } from "./quizzes/javascriptQuiz.mjs";
 
 // create highscore page and store scores in local storage?
 
-// bonus create multiple quizes that can populate automatically based on url?
+// tie progress bar to timer for quiz to replace visual timer countdown
 
+
+// for testing
 var DEBUG = true;
 
-
+// array for the quizzes
 var quizzes = [
       htmlQuiz
     , cssQuiz
     , javascriptQuiz
 ];
 
+// array of quiz titles
 var quizTitles = [
       htmlQuizTitle
     , cssQuizTitle
@@ -35,7 +48,7 @@ var quizTitles = [
 ];
 
 var landingSection = document.getElementById("landing");
-// var quizSection = document.getElementById("quiz");
+var quizSection = document.getElementById("quiz");
 var timeLeftEl = document.getElementById("timeLeft");
 var quizSelectEl = document.getElementById("quizSelect");
 var quizTitleEl = document.getElementById("quizTitle");
@@ -44,56 +57,46 @@ var optionsEl = document.getElementById("options");
 
 // set quizID
 var quizID = 0;
+var currentQuestion;
 
 
 function quizzer(quizID) {
-    var timeLeft = quizzes[quizID].length * 5;
-    var quizArray = quizzes[quizID];
-    quizTitleEl.textContent = `${quizTitles[quizID]} Quiz`;
-
-    if (DEBUG) console.log(quizArray);
-
-    askQuestion(quizID);
-    var quizInterval = setInterval(function() {
-        timeLeftEl.textContent = `${timeLeft} seconds left`;
-        timeLeft--;
-        
-        if (timeLeft === 0) {
-            clearInterval(quizInterval);
-            // this would populate the pop-up with the high scores
-        }
-        return timeLeft;
-    }, 1000)
+    currentQuestion = selectQuestion(quizID);
+    if (currentQuestion) {
+        askQuestion(currentQuestion);
+        orderOptions(currentQuestion);        
+    } else {
+        // Add functionality for end of game
+        alert("Game Over!")
+    }
 }
 
 
 // function to ask random question to the user
-function askQuestion(quizID) {
+function selectQuestion(quizID) {
     var questions = quizzes[quizID].filter( function (question) {
         return question.asked === false;
     })
 
+    if (DEBUG) console.log(`${questions.length} questions not asked`);
     
     if (questions.length > 0) {
-        var newQuestion = questions[Math.floor((questions.length) * Math.random())];
-
-        if (DEBUG) console.log(newQuestion);
-
-        questionEl.textContent = newQuestion.question;
-
-        orderOptions(newQuestion);
-
+        return questions[Math.floor((questions.length) * Math.random())];
     } else {
-        
         return false;
     }
 }
 
-function orderOptions (newQuestion) {
-    console.log(newQuestion.options);
-    newQuestion.options.forEach(function(option){
+function askQuestion(currentQuestion) {
+    questionEl.textContent = currentQuestion.question;
+}
+
+// function to provide options to selected question
+function orderOptions(currentQuestion) {
+    console.log(currentQuestion.options);
+    currentQuestion.options.forEach(function(option){
         var optionButton = document.createElement("button");
-        var index = newQuestion.options.indexOf(option);
+        var index = currentQuestion.options.indexOf(option);
         optionButton.id = index;
         optionButton.setAttribute("type", "button");
         optionButton.setAttribute("class", "btn btn-secondary m-2");
@@ -103,7 +106,32 @@ function orderOptions (newQuestion) {
 
 }
 
-quizzes.forEach(function(quiz){
+function quizTimer() {
+    var timeLeft = quizzes[quizID].length * 5;
+
+    var quizInterval = setInterval(function() {
+        timeLeftEl.textContent = `${timeLeft} seconds left`;
+        timeLeft--;
+
+        if (timeLeft === 0) {
+            clearInterval(quizInterval);
+            // this would populate the pop-up with the high scores
+        }
+        return timeLeft;
+    }, 1000)
+}
+
+function addTime() {
+    timeLeft + 5;
+}
+
+function subtractTime() {
+    timeLeft - 10;
+}
+
+
+
+quizzes.forEach(function(quiz) {
     var quizButton = document.createElement("button");
     var index = quizzes.indexOf(quiz);
     quizButton.id = index;
@@ -119,8 +147,35 @@ quizSelectEl.addEventListener("click", function(event) {
     if (event.target.type === "button"){
         landingSection.style.display = "none";
         quizID = parseInt(event.target.id);
-        quizzer(quizID);       
+        var quizArray = quizzes[quizID];
+        quizTitleEl.textContent = `${quizTitles[quizID]} Quiz`;
+
+        if (DEBUG) console.log(`quizArray: ${quizArray}`);
+
+        quizzer(quizID);
+        quizTimer();
     }
 })
 
+optionsEl.addEventListener("click", function (event) {
+    event.preventDefault();
+    if (event.target.type === "button") {
+        if (event.target.textContent === currentQuestion.answer) {
+            event.target.setAttribute("type", "button");
+            event.target.setAttribute("class", "btn btn-success m-2");
+            addTime();
+            
+        } else {
+            event.target.setAttribute("type", "button");
+            event.target.setAttribute("class", "btn btn-danger m-2");
+            subtractTime();
+        }
+    }
+    
+    currentQuestion.asked = true;
+
+    setTimeout(function(){
+        quizzer(quizID);
+    }, 1000);
+})
 
