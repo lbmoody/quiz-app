@@ -57,23 +57,25 @@ var optionsEl = document.getElementById("options");
 
 // set quizID
 var quizID = 0;
+var timeLeft = 0;
+var points = 0;
 var currentQuestion;
 
 
-function quizzer(quizID) {
+function quizzer() {
     currentQuestion = selectQuestion(quizID);
     if (currentQuestion) {
         askQuestion(currentQuestion);
         orderOptions(currentQuestion);        
     } else {
         // Add functionality for end of game
-        alert("Game Over!")
+        alert("Game Over! \n Score: "+ timeLeft * points);
     }
 }
 
 
 // function to ask random question to the user
-function selectQuestion(quizID) {
+function selectQuestion() {
     var questions = quizzes[quizID].filter( function (question) {
         return question.asked === false;
     })
@@ -87,12 +89,12 @@ function selectQuestion(quizID) {
     }
 }
 
-function askQuestion(currentQuestion) {
+function askQuestion() {
     questionEl.textContent = currentQuestion.question;
 }
 
 // function to provide options to selected question
-function orderOptions(currentQuestion) {
+function orderOptions() {
     console.log(currentQuestion.options);
     currentQuestion.options.forEach(function(option){
         var optionButton = document.createElement("button");
@@ -106,8 +108,14 @@ function orderOptions(currentQuestion) {
 
 }
 
+function removeOptions() {
+    while (optionsEl.firstChild){
+        optionsEl.removeChild(optionsEl.firstChild);
+    }
+}
+
 function quizTimer() {
-    var timeLeft = quizzes[quizID].length * 5;
+    timeLeft = quizzes[quizID].length * 5;
 
     var quizInterval = setInterval(function() {
         timeLeftEl.textContent = `${timeLeft} seconds left`;
@@ -120,15 +128,6 @@ function quizTimer() {
         return timeLeft;
     }, 1000)
 }
-
-function addTime() {
-    timeLeft + 5;
-}
-
-function subtractTime() {
-    timeLeft - 10;
-}
-
 
 
 quizzes.forEach(function(quiz) {
@@ -152,7 +151,7 @@ quizSelectEl.addEventListener("click", function(event) {
 
         if (DEBUG) console.log(`quizArray: ${quizArray}`);
 
-        quizzer(quizID);
+        quizzer();
         quizTimer();
     }
 })
@@ -163,19 +162,20 @@ optionsEl.addEventListener("click", function (event) {
         if (event.target.textContent === currentQuestion.answer) {
             event.target.setAttribute("type", "button");
             event.target.setAttribute("class", "btn btn-success m-2");
-            addTime();
-            
+            points++;
         } else {
             event.target.setAttribute("type", "button");
             event.target.setAttribute("class", "btn btn-danger m-2");
-            subtractTime();
+            points--;
         }
     }
-    
+
     currentQuestion.asked = true;
 
     setTimeout(function(){
+        removeOptions()
         quizzer(quizID);
+
     }, 1000);
 })
 
