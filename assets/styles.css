@@ -1,7 +1,30 @@
-h1, h2 {
+#landing {
+    margin-top: 2rem;
+}
+
+.container {
+    height: 85vh;
+}
+
+.frontend {
+    height: 20vh;
+}
+
+h1, #instructions {
     text-align: center;
 }
 
-/* h1 {
-    margin-top: 2rem;
-} */
+.quizQuestions {
+    width: 30vw;
+}
+
+.highscores {
+    position: absolute;
+    bottom: 1;
+    left: 50%;
+    margin-left: -111px;
+    background-color: white;
+    /* top: 50%; */
+    /* margin-top: -50px; */
+
+}
