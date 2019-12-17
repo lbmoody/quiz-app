@@ -5,30 +5,9 @@ import { cssQuiz }        from "./quizzes/cssQuiz.mjs";
 import { javascriptQuizTitle } from "./quizzes/javascriptQuiz.mjs";
 import { javascriptQuiz } from "./quizzes/javascriptQuiz.mjs";
 
-
-// order quiz answers for each question in a random order
-
-// create function to reset the quizzes
-    // reset quiz.asked === false;
-
-// create function to check users option against correct answer
-    // if correct turn button green
-    // if incorrect turn button red and turn correct answer green
-
-// create function to ask the user another question
-
 // create highscore functionality
 
-// add countdown timer for the entire quiz
-    // end score is the amount of time left when quiz is finished
-    // incorrect answers remove 10 sec from timer
-    // if the user runs out of time the quiz ends
-    // BONUS: add a bar that counts down too. Starts green, turns yellow at 50% time left, and red at 10-15%
-
 // create highscore page and store scores in local storage?
-
-// tie progress bar to timer for quiz to replace visual timer countdown
-
 
 // for testing
 var DEBUG = true;
@@ -47,23 +26,26 @@ var quizTitles = [
     , cssQuizTitle
 ];
 
+var highscores = [];
+
 var landingSection = document.getElementById("landing");
 var quizSection = document.getElementById("quiz");
 var progressBar = document.getElementById("progressBar");
-var timeLeftEl = document.getElementById("timeLeft");
 var quizSelectEl = document.getElementById("quizSelect");
 var quizTitleEl = document.getElementById("quizTitle");
 var questionEl = document.getElementById("question");
 var optionsEl = document.getElementById("options");
+var highscoreEl = document.getElementById("highscoreList");
+var resetButton = document.getElementById("reset");
 
-// set quizID
 var quizID = 0;
-var timeLeft = 0;
+var timeLeft = quizzes[quizID].length * 5;
 var points = 0;
 var currentQuestion;
 var progressBarEl = document.createElement("div");
 var multiplierEl = document.createElement("h3");
 
+loadHighscores();
 
 function quizzer() {
     currentQuestion = selectQuestion(quizID);
@@ -72,7 +54,9 @@ function quizzer() {
         orderOptions(currentQuestion);        
     } else {
         // Add functionality for end of game
-        alert("Game Over! \n Score: "+ timeLeft * points);
+        enterHighscore();
+        storeHighscore();
+        location.reload();
     }
 }
 
@@ -98,7 +82,9 @@ function askQuestion() {
 
 // function to provide options to selected question
 function orderOptions() {
-    console.log(currentQuestion.options);
+
+    if (DEBUG )console.log(currentQuestion.options);
+
     currentQuestion.options.forEach(function(option){
         var optionButton = document.createElement("button");
         var index = currentQuestion.options.indexOf(option);
@@ -118,19 +104,22 @@ function removeOptions() {
 }
 
 function quizTimer() {
-    timeLeft = quizzes[quizID].length * 5;
+    // timeLeft = quizzes[quizID].length * 5;
     createProgressBar();
     var quizInterval = setInterval(function() {
         updateProgressBar();
         timeLeft--;
 
+
         if (timeLeft === -1) {
             clearInterval(quizInterval);
-            alert("Ran Out of Time!");// this would populate the pop-up with the high scores
+            alert("You ran out of time!\nKeep studying and try again!");
+            location.reload();
         }
         return timeLeft;
     }, 1000)
 }
+
 
 // Creates a progress bar to show the user how much time is left to complete the quiz
 
@@ -168,6 +157,30 @@ function updateProgressBar() {
 
 }
 
+function loadHighscores() {
+    var storedHighScores = JSON.parse(localStorage.getItem("highscores"));
+
+    if (storedHighScores) {
+        highscores = storedHighScores;
+        highscores.sort();
+    }
+
+}
+
+function enterHighscore() {
+    var user = prompt("Please enter your name.\n Score: "+ timeLeft * points)
+    var highscore = timeLeft * points;
+    var quizTaken = quizTitles[quizID];
+    var scoreEntry = {score: highscore, player: user, quiz: quizTaken}
+    highscores.push(scoreEntry);
+
+}
+
+function storeHighscore() {
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+}
+
+
 
 quizzes.forEach(function(quiz) {
     var quizButton = document.createElement("button");
@@ -200,11 +213,11 @@ optionsEl.addEventListener("click", function (event) {
     if (event.target.type === "button") {
         if (event.target.textContent === currentQuestion.answer) {
             event.target.setAttribute("type", "button");
-            event.target.setAttribute("class", "btn btn-success m-2");
+            event.target.setAttribute("class", "btn btn-success btn-lg m-2");
             points++;
         } else {
             event.target.setAttribute("type", "button");
-            event.target.setAttribute("class", "btn btn-danger m-2");
+            event.target.setAttribute("class", "btn btn-danger btn-lg m-2");
             points--;
         }
     }
@@ -216,5 +229,18 @@ optionsEl.addEventListener("click", function (event) {
         quizzer(quizID);
 
     }, 1000);
+})
+
+
+highscores.forEach(function(highscore){
+    var userRank = document.createElement("div");
+    userRank.textContent = highscore.score + highscore.player + highscore.quiz;
+    highscoreEl.appendChild(userRank);
+})
+
+// reset application
+resetButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    location.reload();
 })
 

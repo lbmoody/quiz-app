@@ -36,4 +36,10 @@ export var cssQuiz = [
         answer: "border-radius",
         asked: false
     },
+    {
+        question: "Which is not included in the box model.",
+        options: ["border", "margin", "padding", "outline"],
+        answer: "outline",
+        asked: false
+    },
 ]
