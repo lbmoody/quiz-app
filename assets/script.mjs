@@ -49,6 +49,7 @@ var quizTitles = [
 
 var landingSection = document.getElementById("landing");
 var quizSection = document.getElementById("quiz");
+var progressBar = document.getElementById("progressBar");
 var timeLeftEl = document.getElementById("timeLeft");
 var quizSelectEl = document.getElementById("quizSelect");
 var quizTitleEl = document.getElementById("quizTitle");
@@ -60,6 +61,7 @@ var quizID = 0;
 var timeLeft = 0;
 var points = 0;
 var currentQuestion;
+var progressBarEl = document.createElement("div");
 
 
 function quizzer() {
@@ -116,17 +118,49 @@ function removeOptions() {
 
 function quizTimer() {
     timeLeft = quizzes[quizID].length * 5;
-
+    createProgressBar();
     var quizInterval = setInterval(function() {
-        timeLeftEl.textContent = `${timeLeft} seconds left`;
+        updateProgressBar();
         timeLeft--;
 
-        if (timeLeft === 0) {
+        if (timeLeft === -1) {
             clearInterval(quizInterval);
-            // this would populate the pop-up with the high scores
+            alert("Ran Out of Time!");// this would populate the pop-up with the high scores
         }
         return timeLeft;
     }, 1000)
+}
+
+// Creates a progress bar to show the user how much time is left to complete the quiz
+
+function createProgressBar() {
+    var progressBarParent = document.createElement("div");
+    progressBarParent.setAttribute("class", "progress");
+    progressBar.appendChild(progressBarParent);
+    progressBarEl.setAttribute("class", "progress-bar bg-success");
+    progressBarEl.setAttribute("role", "progressbar");
+    progressBarParent.appendChild(progressBarEl);
+    return progressBarEl;
+}
+
+// Updates the progress bar to show how much time is left
+
+function updateProgressBar() {
+    var progressPercent = (timeLeft) / (quizzes[quizID].length * 5) * 100;
+    var percent = progressPercent.toFixed(2);
+    progressBarEl.setAttribute("style", `width: ${percent}%`);
+    progressBarEl.setAttribute("aria-valuenow", `${timeLeft}`);
+    progressBarEl.setAttribute("aria-valuemin", "0");
+    progressBarEl.setAttribute("aria-valuemax", `${quizzes[quizID].length * 5}`);
+
+    if (percent < 66) {
+        progressBarEl.setAttribute("class", "progress-bar bg-warning");
+    }
+
+    if (percent < 33) {
+        progressBarEl.setAttribute("class", "progress-bar bg-danger");
+    }
+
 }
 
 

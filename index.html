@@ -11,17 +11,44 @@
     </head>
     <body>
         <div class="container">
+            <nav class="nav">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#staticBackdrop">Highscore</button>
+                </li>
+            </nav>
             <section id="landing">
                 <h1 id="appTitle">Quiz Challenge</h1>
-                <h2 id="instructions">Choose a quiz, complete the quiz as quickly as possible.<br> But each wrong answer will lower your score by 10 points. Best of Luck!</h2>
+                <h2 id="instructions">Choose a quiz, complete the quiz as quickly as possible.<br> But each wrong answer will lower your score multiplier. Best of Luck!</h2>
                 <div id="quizSelect" class="d-flex justify-content-center mt-4">
             </section>
             <section id="quiz">
                 <h1 id="quizTitle"></h1>
+                <div id="progressBar">
+                </div>
                 <div id="timeLeft"></div>
                 <div id="question"></div>
                 <div id="options"></div>
             </section>
+            <!-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Understood</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
         </div>
         <script type="module" src="./assets/script.mjs"></script>
 </body>

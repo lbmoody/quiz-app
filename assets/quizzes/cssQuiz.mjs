@@ -33,7 +33,7 @@ export var cssQuiz = [
     {
         question: "A CSS property that would round a border is ________.",
         options: ["border-box", "border-style", "border-radius", "border"],
-        answer: "true",
+        answer: "border-radius",
         asked: false
     },
 ]
