@@ -37,7 +37,8 @@ var questionEl =     document.getElementById("question");
 var optionsEl =      document.getElementById("options");
 var userScoreEl =    document.getElementById("userScore");
 var userNameEl =     document.getElementById("userName");
-var userQuizEl =     document.getElementById("userQuiz")
+var userQuizEl =     document.getElementById("userQuiz");
+var clearScores =    document.getElementById("clearHighScores")
 var resetButton =    document.getElementById("reset");
 
 var quizID = 0;
@@ -244,6 +245,12 @@ highscores.forEach(function(highscore){
     userScoreEl.appendChild(userScore);
     userNameEl.appendChild(userName);
     userQuizEl.appendChild(userQuiz);
+})
+
+clearScores.addEventListener("click", function (event) {
+    event.preventDefault()
+    localStorage.clear();
+    location.reload();
 })
 
 // reset application
