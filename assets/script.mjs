@@ -1,9 +1,9 @@
 import { htmlQuizTitle }       from "./quizzes/htmlQuiz.mjs";
-import { htmlQuiz }       from "./quizzes/htmlQuiz.mjs";
+import { htmlQuiz }            from "./quizzes/htmlQuiz.mjs";
 import { cssQuizTitle }        from "./quizzes/cssQuiz.mjs";
-import { cssQuiz }        from "./quizzes/cssQuiz.mjs";
+import { cssQuiz }             from "./quizzes/cssQuiz.mjs";
 import { javascriptQuizTitle } from "./quizzes/javascriptQuiz.mjs";
-import { javascriptQuiz } from "./quizzes/javascriptQuiz.mjs";
+import { javascriptQuiz }      from "./quizzes/javascriptQuiz.mjs";
 
 // create highscore functionality
 
@@ -29,14 +29,16 @@ var quizTitles = [
 var highscores = [];
 
 var landingSection = document.getElementById("landing");
-var quizSection = document.getElementById("quiz");
-var progressBar = document.getElementById("progressBar");
-var quizSelectEl = document.getElementById("quizSelect");
-var quizTitleEl = document.getElementById("quizTitle");
-var questionEl = document.getElementById("question");
-var optionsEl = document.getElementById("options");
-var highscoreEl = document.getElementById("highscoreList");
-var resetButton = document.getElementById("reset");
+var quizSection =    document.getElementById("quiz");
+var progressBar =    document.getElementById("progressBar");
+var quizSelectEl =   document.getElementById("quizSelect");
+var quizTitleEl =    document.getElementById("quizTitle");
+var questionEl =     document.getElementById("question");
+var optionsEl =      document.getElementById("options");
+var userScoreEl =    document.getElementById("userScore");
+var userNameEl =     document.getElementById("userName");
+var userQuizEl =     document.getElementById("userQuiz")
+var resetButton =    document.getElementById("reset");
 
 var quizID = 0;
 var timeLeft = quizzes[quizID].length * 5;
@@ -233,9 +235,15 @@ optionsEl.addEventListener("click", function (event) {
 
 
 highscores.forEach(function(highscore){
-    var userRank = document.createElement("div");
-    userRank.textContent = highscore.score + highscore.player + highscore.quiz;
-    highscoreEl.appendChild(userRank);
+    var userScore = document.createElement("div");
+    var userName = document.createElement("div");
+    var userQuiz = document.createElement("div");
+    userScore.textContent = highscore.score;
+    userName.textContent = highscore.player;
+    userQuiz.textContent = highscore.quiz;
+    userScoreEl.appendChild(userScore);
+    userNameEl.appendChild(userName);
+    userQuizEl.appendChild(userQuiz);
 })
 
 // reset application
