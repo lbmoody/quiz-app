@@ -42,7 +42,7 @@ var clearScores =    document.getElementById("clearHighScores")
 var resetButton =    document.getElementById("reset");
 
 var quizID = 0;
-var timeLeft = quizzes[quizID].length * 5;
+var timeLeft = quizzes[quizID].length * 6;
 var points = 0;
 var currentQuestion;
 var progressBarEl = document.createElement("div");
@@ -142,7 +142,7 @@ function createProgressBar() {
 // Updates the progress bar to show how much time is left
 
 function updateProgressBar() {
-    var progressPercent = (timeLeft) / (quizzes[quizID].length * 5) * 100;
+    var progressPercent = (timeLeft) / (quizzes[quizID].length * 6) * 100;
     var percent = progressPercent.toFixed(2);
     multiplierEl.innerHTML = `Multiplier: <b>x${points}</b>`
     progressBarEl.setAttribute("style", `width: ${percent}%`);
@@ -251,6 +251,7 @@ clearScores.addEventListener("click", function (event) {
     event.preventDefault()
     localStorage.clear();
     location.reload();
+
 })
 
 // reset application
